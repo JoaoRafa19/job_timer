@@ -91,7 +91,7 @@ class DemoPainter extends CustomPainter {
     const origin = Offset(80, -145);
     Paint paint = Paint()
       ..strokeWidth = 4
-      ..color = Color.fromARGB(255, 251, 255, 0);
+      ..color = const Color.fromARGB(255, 251, 255, 0);
 
     canvas.drawCircle(origin, 5, paint);
     paint.color = const Color(0xFF002946);
