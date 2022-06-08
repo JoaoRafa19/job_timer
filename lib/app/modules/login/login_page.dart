@@ -1,16 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:job_timer/app/modules/login/widgets/painter.dart';
 
-class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   AnimationController? _controller;
 
   @override
@@ -27,14 +25,6 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     //if your widget tree needs to rebuild in each tick
     _controller!.addListener(() {
       setState(() {});
-    });
-
-    FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user == null) {
-        Modular.to.navigate('/login/');
-      } else {
-        Modular.to.navigate('/home/');
-      }
     });
   }
 
@@ -61,18 +51,28 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           ),
         ),
         child: Center(
-            child: Stack(children: [
-          image,
-          Positioned(
-              bottom: 0,
-              left: 0,
-              child: CustomPaint(
-                painter: Painter(
-                    angle: _controller!.value.floorToDouble(),
-                    image: image,
-                    context: context),
-              )),
-        ])),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Stack(
+                children: [
+                  image,
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: CustomPaint(
+                      painter: Painter(
+                        angle: _controller!.value.floorToDouble(),
+                        image: image,
+                        context: context,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -38,5 +38,8 @@ class AppConfigUI {
         ),
       ),
     ),
+    appBarTheme: AppBarTheme(
+      centerTitle: true
+    ),
   );
 }
