@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -26,6 +28,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     //if your widget tree needs to rebuild in each tick
     _controller!.addListener(() {
       setState(() {});
+    });
+
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user == null) {
+        Modular.to.navigate('/login');
+      } else {
+        Modular.to.navigate('/home');
+      }
     });
   }
 
