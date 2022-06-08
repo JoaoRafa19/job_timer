@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:job_timer/app/modules/login/widgets/painter.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -32,9 +31,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
-        Modular.to.navigate('/login');
+        Modular.to.navigate('/login/');
       } else {
-        Modular.to.navigate('/home');
+        Modular.to.navigate('/home/');
       }
     });
   }
@@ -68,7 +67,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
               bottom: 0,
               left: 0,
               child: CustomPaint(
-                painter: DemoPainter(
+                painter: Painter(
                     angle: _controller!.value.floorToDouble(),
                     image: image,
                     context: context),
@@ -77,42 +76,4 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       ),
     );
   }
-}
-
-class DemoPainter extends CustomPainter {
-  final double angle;
-  final Image? image;
-  final BuildContext? context;
-
-  DemoPainter({
-    this.angle = 0,
-    this.image,
-    this.context,
-  });
-
-  @override
-  void paint(
-    Canvas canvas,
-    Size size,
-  ) {
-    //Painters aren't our topic in this article,
-    //but briefly it draws 2 mirrored arcs by calculating the sweep angle
-    final rotateAngle = 6000 * angle / 5;
-    const origin = Offset(80, -145);
-    Paint paint = Paint()
-      ..strokeWidth = 4
-      ..color = const Color.fromARGB(255, 251, 255, 0);
-
-    canvas.drawCircle(origin, 5, paint);
-    paint.color = const Color(0xFF002946);
-
-    canvas.drawLine(
-        origin,
-        origin.translate((origin.dx * cos(rotateAngle)) - cos(rotateAngle) * 30,
-            (origin.dx * -sin(rotateAngle)) + sin(rotateAngle) * 30),
-        paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
