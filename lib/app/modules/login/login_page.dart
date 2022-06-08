@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         ),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Stack(
                 children: [
@@ -69,6 +70,18 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(height: screenSize.height * 0.1),
+              SizedBox(
+                width: screenSize.width * 0.8,
+                height: 49,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey[200],
+                  ),
+                  child: Image.asset('assets/images/google.png'),
+                ),
               ),
             ],
           ),

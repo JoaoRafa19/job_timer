@@ -12,10 +12,13 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   AnimationController? _controller;
+  Image? image;
 
   @override
   void initState() {
     super.initState();
+    image = Image.asset('assets/images/logo.png');
+    WidgetsFlutterBinding.ensureInitialized();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 100),
@@ -29,16 +32,16 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       setState(() {});
     });
 
-    FirebaseAuth.instance.authStateChanges().listen((user) {
+    FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user == null) {
+        await Future.delayed(const Duration(seconds: 2));
         Modular.to.navigate('/login/');
       } else {
+        await Future.delayed(const Duration(seconds: 2));
         Modular.to.navigate('/home/');
       }
     });
   }
-
-  final image = Image.asset('assets/images/logo.png');
 
   @override
   void dispose() {
@@ -61,18 +64,21 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           ),
         ),
         child: Center(
-            child: Stack(children: [
-          image,
-          Positioned(
-              bottom: 0,
-              left: 0,
-              child: CustomPaint(
-                painter: Painter(
-                    angle: _controller!.value.floorToDouble(),
-                    image: image,
-                    context: context),
-              )),
-        ])),
+          child: image != null
+              ? Stack(children: [
+                  image ?? Container(),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: CustomPaint(
+                        painter: Painter(
+                            angle: _controller!.value.floorToDouble(),
+                            image: image,
+                            context: context),
+                      )),
+                ])
+              : Container(),
+        ),
       ),
     );
   }
