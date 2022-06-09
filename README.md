@@ -59,3 +59,5 @@ dev_dependencies:
   build_runner: ^2.1.11
 
 ```
+
+## Animation Code

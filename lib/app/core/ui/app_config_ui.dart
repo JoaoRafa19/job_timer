@@ -5,6 +5,7 @@ class AppConfigUI {
 
   static get theme => _theme;
 
+
   static const MaterialColor _primarySwatch = MaterialColor(0xFF0066b0, {
     50: Color(0xFF005c9e),
     100: Color(0xFF00528d),
@@ -38,7 +39,7 @@ class AppConfigUI {
         ),
       ),
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       centerTitle: true
     ),
   );
