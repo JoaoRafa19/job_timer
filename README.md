@@ -1,18 +1,25 @@
 # job_timer
 
-## Build
+## Build Project
+  
+  Comand to genetate Database models
+  >Generate files
 
->Get dependencies
+  ```bash
+  flutter pub run build_runner build --delete-conflicting-outputs
+  ```
 
-```bash
-flutter pub get 
-```
+  >Get dependencies
 
->Generate files
+  ```bash
+  flutter pub get 
+  ```
 
-```bash
-fluter pub run build_runner build --delete-conflicting-outputs
-```
+  > Run the app
+
+  ```bash
+  flutter run
+  ```
 
 ## Dependencies
 
@@ -59,5 +66,3 @@ dev_dependencies:
   build_runner: ^2.1.11
 
 ```
-
-## Animation Code
