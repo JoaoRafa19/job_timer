@@ -60,8 +60,4 @@ dev_dependencies:
 
 ```
 
-
 ## Animation Code
-
-  
-  
