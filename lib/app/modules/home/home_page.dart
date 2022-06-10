@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
                       BorderRadius.vertical(bottom: Radius.circular(16))),
             ),
             SliverPersistentHeader(
-              delegate: HeaderProjectMenu(),
+              delegate: HeaderProjectMenu(), 
               pinned: true,
             ),
             SliverList(
