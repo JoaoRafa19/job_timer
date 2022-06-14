@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
                 Container(
                   color: Colors.blue,
                   height: 200,
-                  child: Text("FIM"),
+                  child: const Text("FIM"),
                 ),
               ]),
             )
