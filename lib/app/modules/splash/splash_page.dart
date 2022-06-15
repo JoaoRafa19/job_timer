@@ -1,6 +1,7 @@
-import 'dart:math';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:job_timer/app/modules/login/widgets/painter.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -11,10 +12,13 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   AnimationController? _controller;
+  Image? image;
 
   @override
   void initState() {
     super.initState();
+    image = Image.asset('assets/images/logo.png');
+    WidgetsFlutterBinding.ensureInitialized();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 100),
@@ -27,9 +31,17 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     _controller!.addListener(() {
       setState(() {});
     });
-  }
 
-  final image = Image.asset('assets/images/logo.png');
+    FirebaseAuth.instance.authStateChanges().listen((user) async {
+      if (user == null) {
+        await Future.delayed(const Duration(seconds: 2));
+        Modular.to.navigate('/login/');
+      } else {
+        await Future.delayed(const Duration(seconds: 2));
+        Modular.to.navigate('/home/');
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -52,57 +64,22 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
           ),
         ),
         child: Center(
-            child: Stack(children: [
-          image,
-          Positioned(
-              bottom: 0,
-              left: 0,
-              child: CustomPaint(
-                painter: DemoPainter(
-                    angle: _controller!.value.floorToDouble(),
-                    image: image,
-                    context: context),
-              )),
-        ])),
+          child: image != null
+              ? Stack(children: [
+                  image ?? Container(),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: CustomPaint(
+                        painter: Painter(
+                            angle: _controller!.value.floorToDouble(),
+                            image: image,
+                            context: context),
+                      )),
+                ])
+              : Container(),
+        ),
       ),
     );
   }
-}
-
-class DemoPainter extends CustomPainter {
-  final double angle;
-  final Image? image;
-  final BuildContext? context;
-
-  DemoPainter({
-    this.angle = 0,
-    this.image,
-    this.context,
-  });
-
-  @override
-  void paint(
-    Canvas canvas,
-    Size size,
-  ) {
-    //Painters aren't our topic in this article,
-    //but briefly it draws 2 mirrored arcs by calculating the sweep angle
-    final rotateAngle = 6000 * angle / 5;
-    const origin = Offset(80, -145);
-    Paint paint = Paint()
-      ..strokeWidth = 4
-      ..color = Color.fromARGB(255, 251, 255, 0);
-
-    canvas.drawCircle(origin, 5, paint);
-    paint.color = const Color(0xFF002946);
-
-    canvas.drawLine(
-        origin,
-        origin.translate((origin.dx * cos(rotateAngle)) - cos(rotateAngle) * 30,
-            (origin.dx * -sin(rotateAngle)) + sin(rotateAngle) * 30),
-        paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

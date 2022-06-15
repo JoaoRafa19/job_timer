@@ -29,6 +29,6 @@ class Freeler {
   static const _kFontFam = 'Freeler';
   static const String? _kFontPkg = null;
 
-  static const IconData ok_circled2 = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData angle_double_right = IconData(0xf101, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData okCircled = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData angleDoubleRight = IconData(0xf101, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
