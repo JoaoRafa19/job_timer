@@ -6,7 +6,6 @@ part 'project_task.g.dart';
 class ProjectTask {
   @Id()
   int? id;
-
   late String name;
   late int duration;
   late DateTime created = DateTime.now();

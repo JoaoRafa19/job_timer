@@ -17,9 +17,8 @@ class DatabaseImpl implements Database {
         directory: dir.path,
         inspector: true,
       );
-      return _databaseInstance!;
-    } else {
-      return _databaseInstance!;
     }
+
+    return _databaseInstance!;
   }
 }

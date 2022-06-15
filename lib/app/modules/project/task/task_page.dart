@@ -2,59 +2,52 @@ import 'package:asuka/asuka.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_timer/app/core/ui/button_with_loader.dart';
-import 'package:job_timer/app/modules/project/register/controller/project_register_controller.dart';
+import 'package:job_timer/app/modules/project/task/controller/task_controller.dart';
 import 'package:validatorless/validatorless.dart';
 
-class ProjectRegisterPage extends StatefulWidget {
-  final ProjectRegisterController controller;
+class TaskPage extends StatefulWidget {
+  final TaskController controller;
 
-  const ProjectRegisterPage({super.key, required this.controller});
+  const TaskPage({super.key, required this.controller});
 
   @override
-  State<ProjectRegisterPage> createState() => _ProjectRegisterPageState();
+  State<TaskPage> createState() => _TaskPageState();
 }
 
-class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
+class _TaskPageState extends State<TaskPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameEC = TextEditingController();
-  final _estimateEC = TextEditingController();
+  final _durationEC = TextEditingController();
 
   @override
   void dispose() {
     _nameEC.dispose();
-    _estimateEC.dispose();
+    _durationEC.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProjectRegisterController, ProjectRegisterStatus>(
+    return BlocListener<TaskController, TaskStatus>(
       bloc: widget.controller,
       listener: (context, state) {
-        switch (state) {
-          case ProjectRegisterStatus.success:
-            Navigator.pop(context);
-            break;
-          case ProjectRegisterStatus.failure:
-            AsukaSnackbar.alert('Erro ao salvar projeto').show();
-            break;
-          default:
-            break;
+        if (state == TaskStatus.success) {
+          Navigator.pop(context);
+        } else if (state == TaskStatus.failure) {
+          AsukaSnackbar.alert('Erro ao salvar Task').show();
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(
-            'Criar novo projeto',
-            style: TextStyle(
-              color: Colors.black,
-            ),
+            'Criar nova task',
+            style: TextStyle(color: Colors.black),
           ),
-          backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
           elevation: 0,
         ),
+        backgroundColor: Colors.white,
         body: Form(
           key: _formKey,
           child: Padding(
@@ -64,7 +57,7 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
                 TextFormField(
                   controller: _nameEC,
                   decoration: const InputDecoration(
-                    label: Text('Nome do projeto'),
+                    label: Text('Nome da task'),
                   ),
                   validator: Validatorless.required('Nome obrigatório'),
                 ),
@@ -72,14 +65,14 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: _estimateEC,
-                  keyboardType: TextInputType.number,
+                  controller: _durationEC,
                   decoration: const InputDecoration(
-                    label: Text('Estimativa de horas'),
+                    label: Text('Duração da task'),
                   ),
+                  keyboardType: TextInputType.number,
                   validator: Validatorless.multiple([
-                    Validatorless.required('Estimativa obrigatória'),
-                    Validatorless.number('Permitido somente números'),
+                    Validatorless.required('Duração obrigatória'),
+                    Validatorless.number('Permitido somente numeros'),
                   ]),
                 ),
                 const SizedBox(
@@ -88,20 +81,18 @@ class _ProjectRegisterPageState extends State<ProjectRegisterPage> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 49,
-                  child: ButtonWithLoader<ProjectRegisterController, ProjectRegisterStatus>(
+                  child: ButtonWithLoader<TaskController, TaskStatus>(
                     bloc: widget.controller,
-                    selector: (state) => state == ProjectRegisterStatus.loading,
-                    onPressed: () async {
+                    selector: (state) => state == TaskStatus.loading,
+                    label: 'Salvar',
+                    onPressed: () {
                       final formValid =
                           _formKey.currentState?.validate() ?? false;
                       if (formValid) {
-                        final name = _nameEC.text;
-                        final estimate = int.parse(_estimateEC.text);
-
-                        await widget.controller.register(name, estimate);
+                        final duration = int.parse(_durationEC.text);
+                        widget.controller.register(_nameEC.text, duration);
                       }
                     },
-                    label: 'Salvar',
                   ),
                 )
               ],

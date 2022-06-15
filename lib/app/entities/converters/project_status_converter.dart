@@ -5,12 +5,12 @@ class ProjectStatusConverter extends TypeConverter<ProjectStatus, int> {
   const ProjectStatusConverter();
 
   @override
-  ProjectStatus fromIsar(int object){
+  ProjectStatus fromIsar(int object) {
     return ProjectStatus.values[object];
   }
 
   @override
-  int toIsar(ProjectStatus object){
+  int toIsar(ProjectStatus object) {
     return object.index;
   }
 }
